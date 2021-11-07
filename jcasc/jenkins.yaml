@@ -1,0 +1,59 @@
+credentials:
+  system:
+    domainCredentials:
+    - credentials:
+      - string:
+          description: "jenkins-service-token"
+          id: "jenkins-service-token-1"
+          scope: GLOBAL
+          secret: "{AQAAABAAAAOQhq168VRDJ2NIv45EuX8ohDm7pQLtNMYiTgCP1PVIDEBCMibTXuDJax4m9Ppmxn19dQr3TdaesaLV8d1zOH2ij9NUg1K+A9Ev21JUrLHCWEY052oBba8nVlKeC7hEF/zflS2e0ItC3HB0g9WxWdY7G8FyGDm/MGPwoDBIfvfYlOYuTJk3uTfQDe9W10n+yHS2SZKqv+8K0AjLaVoSMXWW1IFM4vlE9EMczbdp3n9ls771FKzoXU3SiDzgcgdpDVS56eNY50UpraeW2+TOW8ZiAvlp8pLsAnegAeqhmHNrWfIoQM2WZ1fPqfqNkAWKyA6hxJXvrkL9csqslGwiX9kl6u28c0AUkLfAeAMb6CwapeyGh+77B1MzmRN10TYjR3oNwJZtaAwoKSR//IluqZXHqJH2aptAtb1IYfES2JExRcfe2RiXuA33gYebnteMTYFPykdAd1C7b6p7D3uSqLyJgfE2/9BAC7G3vBbcVvpm8LRUwzouK9WmJIDyJYrCRQKcA4ywhWCxTF4khat6DeWSwfFBdQyVU/vGl4x5CxC1fK63kTmZYw/y1NCk17MJBNGqd0JhRFg0lJZ02K2MEq6XdXDlijNkZRLI1QknwM00QJ9ByqHJ+bUrPN4baeB/mi5SIbUy7nrsApdVaHFEzQj28C38IdKU5E5LWpBLOZ767SD/8p1QXMIHG8Bz19O3UhkBVU5nkExo1v8rI1VqU4gWdtRMo/x/GSHCJidiedozrClnlbhsDEMcrlnues2nbU+SOOTBN1r/QYcQd5NK1zxhlQsoPlXeHa4NLj/+9YwC7DSUSwK1+ZgN0nhmuN9gbQj4CG+Nn5Bg4JVVWfISQlGY6w8kZjorIKy7AzIig1MG21GPtxVGnQ3kbQJa87PbxHjv79saQ2hMoZU8U3IPuDKxqSrktzWnp1hBhnh3peXhvG9kaeZ0aLej1EMAXXwISKSfXIatQSr7mQNMexttT4Z0O/ti5M5Yat2m4AqBW/0IS+EtrkDxs8GON0wV4Wfa7gaHQcsytRrMh1Kj45ixaW303wVzzHdt5AFoSj+Df2+iEPZnQFk3uhC3Mth7VmvA1h+4i3KmT4KY3NCGc3MKSvmtpr90lLyWqQ+UojdZiauM6+VVwSdf8oOw+n/0cMeoSA7R4xj4X6GPlIh7RUIt9heRzYGkMz2DwiS2ZI22SVKuGNhxQaL0RcDlMeb20Frpq1lk8JLuq+Gt0sFFuVwOMuB7PA==}"
+      - usernamePassword:
+          description: "docker-hub-token"
+          id: "docker-hub-token"
+          password: "{AQAAABAAAAAwguxqHpFuweEvKMJTEeUg7gAv7ADH3DXf1XTNisxzu/uBkPDq0RMZI7k06HUKfjWoXCGt1qnFVHz7TI5sHir1Pw==}"
+          scope: GLOBAL
+          username: "ggnanasekaran77"
+      - usernamePassword:
+          description: "github-http-user-token"
+          id: "github-http-user-token"
+          password: "{AQAAABAAAAAwvneEWZfzI4ktmNZmAVvkR6N5sssKtxTCSeOGsTk3u3+OzdN0OtHmCdFtLuLkE/KBA/rbfF7/59YjdyURd4tKTg==}"
+          scope: GLOBAL
+          username: "ggnanasekaran77"
+      - string:
+          description: "sonarcloud-token"
+          id: "sonarcloud-token"
+          scope: GLOBAL
+          secret: "{AQAAABAAAAAwUe686E2LYSh4sZTyMF62rUzddfdYpdc9SbknQQompj4W1N5oSiEygWwbPrtr52/jtAoO87UOMbW+NdSGIUGMsg==}"
+      - string:
+          description: "github-token"
+          id: "github-token"
+          scope: GLOBAL
+          secret: "{AQAAABAAAAAwIvVRAbwBNEEFUxiYRQKPVVV2GyEK6h0vY0JDPewi3+AhrUjjK6ckebsvcBO76fTDXzSEGGNfuEH5iRkqF00dKA==}"
+jenkins:
+  clouds:
+  - kubernetes:
+      containerCap: 10
+      containerCapStr: "10"
+      credentialsId: "jenkins-service-token-1"
+      jenkinsUrl: "http://35.198.238.101:8080/"
+      name: "kubernetes"
+      namespace: "jenkins"
+      serverUrl: "https://35.198.227.30"
+      skipTlsVerify: true
+      webSocket: true
+  crumbIssuer:
+    standard:
+      excludeClientIPFromCrumb: true
+  numExecutors: 1
+  slaveAgentPort: 50000
+  systemMessage: "This Jenkins is 100% configured and managed as code."
+unclassified:
+  gitHubPluginConfig:
+    configs:
+    - credentialsId: "github-token"
+      manageHooks: false
+      name: "github"
+    hookUrl: "http://35.198.238.101:8080/github-webhook/"
+  location:
+    adminAddress: "Gnanasekaran, Gajendiran<gnanasekaran.gajendi@gmail.com>"
+    url: "http://35.198.238.101:8080/"

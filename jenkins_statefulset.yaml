@@ -1,0 +1,114 @@
+apiVersion: apps/v1
+  kind: StatefulSet
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"StatefulSet","metadata":{"annotations":{},"labels":{"app.kubernetes.io/component":"jenkins-master","app.kubernetes.io/name":"jenkins-1"},"name":"jenkins-1-jenkins","namespace":"jenkins","ownerReferences":[{"apiVersion":"app.k8s.io/v1beta1","blockOwnerDeletion":true,"kind":"Application","name":"jenkins-1","uid":"29fe79f8-f635-4a99-89ea-5053b042f5d3"}]},"spec":{"replicas":1,"selector":{"matchLabels":{"app.kubernetes.io/component":"jenkins-master","app.kubernetes.io/name":"jenkins-1"}},"serviceName":"jenkins-1-jenkins-ui","template":{"metadata":{"labels":{"app.kubernetes.io/component":"jenkins-master","app.kubernetes.io/name":"jenkins-1"}},"spec":{"containers":[{"env":[{"name":"JENKINS_OPTS","value":""},{"name":"JAVA_OPTS","value":"-Xmx1800m"},{"name":"INSTALL_MONITORING","value":"true"}],"image":"gcr.io/cloud-marketplace/google/jenkins:2.222.4-20210404-144251","name":"jenkins-master","ports":[{"containerPort":8080},{"containerPort":50000}],"readinessProbe":{"failureThreshold":5,"httpGet":{"path":"/login","port":8080},"periodSeconds":10,"successThreshold":2,"timeoutSeconds":5},"resources":{"limits":{"memory":"2.0Gi"},"requests":{"cpu":"100m","memory":"2.0Gi"}},"volumeMounts":[{"mountPath":"/var/jenkins_home","name":"jenkins-1-jenkins-pvc"}]}],"initContainers":[{"command":["sh","-c","chown 1000:1000 /var/jenkins_home"],"image":"gcr.io/cloud-marketplace/google/jenkins:2.222.4-20210404-144251","name":"volume-permissions-fix","securityContext":{"runAsUser":0},"volumeMounts":[{"mountPath":"/var/jenkins_home","name":"jenkins-1-jenkins-pvc"}]}]}},"volumeClaimTemplates":[{"metadata":{"labels":{"app.kubernetes.io/component":"jenkins-master","app.kubernetes.io/name":"jenkins-1"},"name":"jenkins-1-jenkins-pvc"},"spec":{"accessModes":["ReadWriteOnce"],"resources":{"requests":{"storage":"8Gi"}},"storageClassName":"premium-rwo"}}]}}
+    creationTimestamp: "2021-10-21T23:20:14Z"
+    generation: 1
+    labels:
+      app.kubernetes.io/component: jenkins-master
+      app.kubernetes.io/name: jenkins-1
+    name: jenkins-1-jenkins
+    namespace: jenkins
+    ownerReferences:
+    - apiVersion: app.k8s.io/v1beta1
+      blockOwnerDeletion: true
+      kind: Application
+      name: jenkins-1
+      uid: 29fe79f8-f635-4a99-89ea-5053b042f5d3
+    resourceVersion: "2485"
+    uid: 2882cfe4-47ca-4c3b-8681-d7f766b42ee1
+  spec:
+    podManagementPolicy: OrderedReady
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app.kubernetes.io/component: jenkins-master
+        app.kubernetes.io/name: jenkins-1
+    serviceName: jenkins-1-jenkins-ui
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app.kubernetes.io/component: jenkins-master
+          app.kubernetes.io/name: jenkins-1
+      spec:
+        containers:
+        - env:
+          - name: JENKINS_OPTS
+          - name: JAVA_OPTS
+            value: -Xmx1800m
+          - name: INSTALL_MONITORING
+            value: "true"
+          image: gcr.io/cloud-marketplace/google/jenkins:2.222.4-20210404-144251
+          imagePullPolicy: IfNotPresent
+          name: jenkins-master
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          - containerPort: 50000
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 5
+            httpGet:
+              path: /login
+              port: 8080
+              scheme: HTTP
+            periodSeconds: 10
+            successThreshold: 2
+            timeoutSeconds: 5
+          resources:
+            limits:
+              memory: 2Gi
+            requests:
+              cpu: 100m
+              memory: 2Gi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /var/jenkins_home
+            name: jenkins-1-jenkins-pvc
+        dnsPolicy: ClusterFirst
+        initContainers:
+        - command:
+          - sh
+          - -c
+          - chown 1000:1000 /var/jenkins_home
+          image: gcr.io/cloud-marketplace/google/jenkins:2.222.4-20210404-144251
+          imagePullPolicy: IfNotPresent
+          name: volume-permissions-fix
+          resources: {}
+          securityContext:
+            runAsUser: 0
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /var/jenkins_home
+            name: jenkins-1-jenkins-pvc
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+    updateStrategy:
+      rollingUpdate:
+        partition: 0
+      type: RollingUpdate
+    volumeClaimTemplates:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        creationTimestamp: null
+        labels:
+          app.kubernetes.io/component: jenkins-master
+          app.kubernetes.io/name: jenkins-1
+        name: jenkins-1-jenkins-pvc
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 8Gi
+        storageClassName: premium-rwo
+        volumeMode: Filesystem

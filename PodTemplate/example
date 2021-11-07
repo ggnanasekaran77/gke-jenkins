@@ -1,0 +1,51 @@
+podTemplate(yaml: '''
+    apiVersion: v1
+    kind: Pod
+    spec:
+      containers:
+      - name: gradle
+        image: gradle:6.9.1-jdk8
+        command:
+        - sleep
+        args:
+        - 99d
+        volumeMounts:
+        - name: build-cache
+          mountPath: /tmp
+      - name: docker
+        image: docker:18.05-dind
+        volumeMounts:
+        - name: dockersock
+          mountPath: /var/run/docker.sock
+        securityContext:
+            privileged: true
+        command: ['cat']
+        tty: true
+      volumes:
+      - name: dockersock
+        hostPath:
+          path: /var/run/docker.sock
+      - name: build-cache
+        hostPath:
+          path: /tmp
+''') {
+    node(POD_LABEL) {
+        stage('Git Checkout') {
+            git url: 'https://github.com/ggnanasekaran77/configserver.git', branch: 'main'
+        }
+        container('gradle') {
+            stage('App Build') {
+                sh 'mkdir -p /tmp/cache'  
+                sh 'gradle clean build -g /tmp/cache -x test'
+            }
+        }
+        container ('docker') {
+            stage('Docker Build') {
+                docker.withRegistry('', 'docker-hub-token') {
+                    def customImage = docker.build("ggnanasekaran77/configserver:${env.GIT_COMMIT}")
+                    customImage.push('latest')
+                }
+            }
+        }
+    }
+}

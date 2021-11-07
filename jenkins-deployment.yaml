@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: jenkins
+  name: jenkins
+  namespace: jenkins
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jenkins
+  revisionHistoryLimit: 3
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: jenkins
+    spec:
+      containers:
+      - image: ggnanasekaran77/jenkins
+        name: jenkins
+        env:
+        - name: CASC_JENKINS_CONFIG
+          value: "/usr/share/jenkins/ref/jenkins.yml"
+        - name: JAVA_OPTS
+          value: "-Djenkins.install.runSetupWizard=false"
+        resources:
+          limits:
+            cpu: 2
+            memory: 4096Mi
+          requests:
+            cpu: 2
+            memory: 4096Mi
+        volumeMounts:
+        - name: jenkins-home
+          mountPath: /var/jenkins_home 
+        ports:
+          - containerPort: 8080
+          - containerPort: 50000
+      volumes:
+      - name: jenkins-home
+        hostPath:
+          path: /host/kube_jenkins_home
+          type: Directory
+status: {}

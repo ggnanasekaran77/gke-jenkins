@@ -1,0 +1,23 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"path": "../../argo-cd"
+		},
+		{
+			"path": "../../kube-demoapp"
+		},
+		{
+			"path": "../../canada-summit-2021"
+		},
+		{
+			"path": "../../terraform-aws"
+		},
+		{
+			"path": "../../configserver"
+		}
+	],
+	"settings": {}
+}
