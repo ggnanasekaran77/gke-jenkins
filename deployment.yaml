@@ -1,34 +1,3 @@
 server:
 http_listen_port: 9080
 grpc_listen_port: 0
-
-positions:
-filename: /tmp/positions.yaml
-
-clients:
-- url: http://stg-mon-paglog101z.stg.jp.local:3100/loki/api/v1/push
-
-scrape_configs:
-- job_name: {{projectName}}_{{appName}}_{{tomcat}}_promtail
-static_configs:
-- targets:
-- {{inventory_hostname}}
-labels:
-job: tomcat
-host: {{inventory_hostname}}
-__path__: /usr/local/tomcat/tomcat-i01/logs/*.log,/usr/local/tomcat/tomcat-i01/logs/catalina.out ,app_timer.log, localhost_access.log, warn.log, error.log
-
-
-promtail/templates/<<middlewarename>>.yaml --> promtail/conf.d/<<middlewarename>>.yaml
-
-
-
-application.yaml
-middlewareName: 
-
-
-
-
-
-
-
